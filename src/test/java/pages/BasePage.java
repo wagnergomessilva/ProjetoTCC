@@ -29,6 +29,10 @@ public class BasePage {
 	public void clicarBotaXpath(String xpath) {
 		getDriver().findElement(By.xpath(xpath)).click();
 	}
+	
+	public String obterValorComXpath(String xpath) {
+		return getDriver().findElement(By.xpath(xpath)).getText();
+	}
 
 	public void clicarCheckBoxId(String id) {
 		getDriver().findElement(By.id(id)).click();

@@ -7,9 +7,9 @@ import org.openqa.selenium.By;
 public class EntradaProdutoAcabadoPage extends BasePage {
 
 	public void setTurno(String turnoCodigo) {
-		escrever("epturno2", turnoCodigo);		
+		escrever("epturno2", turnoCodigo);
 	}
-	
+
 	public void validaAlertaSalvoComSucesso() {
 		assertEquals("Salvo com sucesso.", alertaObterTextoEAceita());
 	}
@@ -19,11 +19,11 @@ public class EntradaProdutoAcabadoPage extends BasePage {
 	}
 
 	public void setCodigoOrdemProducao(String codigoOP) {
-		escreverEDarEnter("objordemprodepi2", codigoOP);		
+		escreverEDarEnter("objordemprodepi2", codigoOP);
 	}
 
 	public void validaProduto(String produto, String id_campo) {
-		assertEquals(produto, getCodigo(By.id(id_campo)));		
+		assertEquals(produto, getCodigo(By.id(id_campo)));
 	}
 
 	public void clicarBotaAdicionarEPA() {
@@ -33,5 +33,11 @@ public class EntradaProdutoAcabadoPage extends BasePage {
 	public void clicarBotaoConfirmaInsumo() {
 		clicarBotaId("btnConfirmInsumo");
 	}
-	
+
+	public String obterCodigoEPA(String id_campo) {
+		String teste = getCodigo(By.id(id_campo));
+		System.out.println(teste);
+		return teste;
+	}
+
 }
