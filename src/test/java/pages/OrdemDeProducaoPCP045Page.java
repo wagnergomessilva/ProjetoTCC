@@ -11,7 +11,7 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 	}
 
 	public void clicarBotaoConfirmar() {
-		clicarBotaXpath("//span[@class='botoes']//input[@id='btnSave']");
+		clicarBotaId("btnSave");
 	}
 
 	public void clicarAbaCadastro() {

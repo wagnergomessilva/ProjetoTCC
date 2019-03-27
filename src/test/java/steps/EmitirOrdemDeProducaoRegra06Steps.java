@@ -65,7 +65,7 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 	public void cadastro_uma_ordem_de_produção_com_esta_regra() throws Throwable {
 		
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(700);
+		ordemProd.esperaFixa(1000);
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente("1182");
 		ordemProd.setOrigemOP("0");
@@ -97,7 +97,7 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 	@E("^realizo a entrada de produto desta Ordem de produção$")
 	public void realizo_a_entrada_de_produto_desta_Ordem_de_produção() throws Throwable {
 		menuPage.acessaTelaEntradaProdutoAcabado();
-		entProAcabado.esperaFixa(700);
+		entProAcabado.esperaFixa(1000);
 		entProAcabado.alternarFocoJanela(3);
 		entProAcabado.setTurno("1");
 		entProAcabado.clicarBotaoConfirmarEPA();

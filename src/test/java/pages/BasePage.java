@@ -95,8 +95,11 @@ public class BasePage {
 	}
 
 	public void esperaExplicita(String id) {
-		WebDriverWait wait = new WebDriverWait(getDriver(), 30);
+		WebDriverWait wait = new WebDriverWait(getDriver(), 10);
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(id)));
+		//wait.until(ExpectedConditions.textToBe(By.id(id), texto));
+		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[1]/div/img")));
+		
 	}
 
 	public String getCodigo(By by) {
