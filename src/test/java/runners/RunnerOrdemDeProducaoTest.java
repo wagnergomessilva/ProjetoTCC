@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-				features = "src/test/resources/features/ordem_producao_regra06.feature",
+				features = "src/test/resources/features/CT002_ordem_producao_regra02.feature",
 				plugin = "pretty",
 				glue = "steps",
 				monochrome = true,

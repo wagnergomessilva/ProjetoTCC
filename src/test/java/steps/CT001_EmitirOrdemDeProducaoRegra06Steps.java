@@ -17,7 +17,7 @@ import pages.LoginPage;
 import pages.MenuPage;
 import pages.OrdemDeProducaoPCP045Page;
 
-public class EmitirOrdemDeProducaoRegra06Steps {
+public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 
 	private LoginPage loginPage = new LoginPage();
 	private MenuPage menuPage = new MenuPage();
@@ -27,12 +27,15 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 	KardexPage kardex = new KardexPage();
 	
 	//variaveis globais
+	
+	String casoTeste = "CT001 - Ordem Producao Regra 06"; //varivael que será utilizada para nomear o Screenshot
+	
 	String codigoOP;
 	String codProduto;
 	String codEPA;
 
 	@Dado("^que cadastro um configurador com a regra (\\d+)$")
-	public void que_cadastro_um_configurador_com_a_regra(int arg1) throws Throwable {
+	public void que_cadastro_um_configurador_com_a_regra(int numeroRegra) throws Throwable {
 		loginPage.acessarTelaSistema();
 		loginPage.setUsuario("robohom");
 		loginPage.setSenha("robo123");
@@ -41,7 +44,7 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 		menuPage.acessaTelaConfiguradorDeOrdemProducao();
 
 		confiOP.alternarFocoJanela(1);
-		confiOP.setDescricaoRegra("REGRA 06");
+		confiOP.setDescricaoRegra("REGRA "+numeroRegra+"");
 		confiOP.setOrigemValue("0");
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaSalvoComSucesso();
@@ -65,7 +68,7 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 	public void cadastro_uma_ordem_de_produção_com_esta_regra() throws Throwable {
 		
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(1000);
+		ordemProd.esperaFixa(700);
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente("1182");
 		ordemProd.setOrigemOP("0");
@@ -97,7 +100,7 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 	@E("^realizo a entrada de produto desta Ordem de produção$")
 	public void realizo_a_entrada_de_produto_desta_Ordem_de_produção() throws Throwable {
 		menuPage.acessaTelaEntradaProdutoAcabado();
-		entProAcabado.esperaFixa(1000);
+		entProAcabado.esperaFixa(700);
 		entProAcabado.alternarFocoJanela(3);
 		entProAcabado.setTurno("1");
 		entProAcabado.clicarBotaoConfirmarEPA();
@@ -114,11 +117,11 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 	}
  
 	@E("^consulto o estoque do produto (\\d+)$")
-	public void consulto_o_estoque_do_produto(int arg1) throws Throwable {
+	public void consulto_o_estoque_do_produto(String produto) throws Throwable {
 		menuPage.acessaTelaKardex();
 		kardex.esperaFixa(700);
 		kardex.alternarFocoJanela(4);
-		kardex.setProdutoConsulta(codProduto);
+		kardex.setProdutoConsulta(produto);
 		kardex.clicarBotaoPesquisarKardex();
 	}
 
@@ -127,9 +130,13 @@ public class EmitirOrdemDeProducaoRegra06Steps {
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
 	}
-
+	
+	
 	@After
 	public void finaliza() throws IOException {
+
+		ordemProd.capturaScreenchot(casoTeste);
+		
 		if (Propriedades.FECHAR_BROWSER) {
 			killDriver();
 		}
