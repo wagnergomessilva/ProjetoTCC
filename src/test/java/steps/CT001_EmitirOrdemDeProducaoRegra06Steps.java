@@ -2,9 +2,16 @@ package steps;
 
 import static core.DriverFactory.killDriver;
 
+import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
+import core.DriverFactory;
 import core.Propriedades;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
@@ -131,12 +138,15 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		kardex.validaNumeroEPA(codEPA);
 	}
 	
+	@After(order = 1)
+	public void screenshot(Scenario cenario) throws IOException {		
+		TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
+		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(arquivo, new File("target"+File.separator+"screenshot"+File.separator + cenario.getId()  + ".jpg"));
+	}
 	
-	@After
+	@After(order = 0)
 	public void finaliza() throws IOException {
-
-		ordemProd.capturaScreenchot(casoTeste);
-		
 		if (Propriedades.FECHAR_BROWSER) {
 			killDriver();
 		}

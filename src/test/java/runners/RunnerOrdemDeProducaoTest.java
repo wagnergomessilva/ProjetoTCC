@@ -8,13 +8,14 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-				features = "src/test/resources/features/CT002_ordem_producao_regra02.feature",
+				features = "src/test/resources/features/", //CT001_ordem_producao_regra06.feature
 				plugin = "pretty",
 				glue = "steps",
 				monochrome = true,
 				snippets = SnippetType.CAMELCASE,
 				dryRun = false,
-				strict = false				
+				strict = false	
+				
 		)
 
 public class RunnerOrdemDeProducaoTest {

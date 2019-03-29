@@ -79,10 +79,10 @@ public class EmitirNFeOutrasNotasSteps{
 		ONPage.clicarBotaoPesquisar();
 	}
 	
-	@After
+	/*@After
 	public void finaliza() throws IOException {
 		if (Propriedades.FECHAR_BROWSER) {
 			killDriver();
 		}
-	}
+	}*/
 }

@@ -20,12 +20,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import core.DriverFactory;
+import cucumber.api.Scenario;
 
 public class BasePage {
 	
-	@Rule
-	public TestName testnome = new TestName(); 
-
 	public void escrever(String id_campo, String texto) {
 		getDriver().findElement(By.id(id_campo)).sendKeys(texto);
 	}
@@ -116,12 +114,6 @@ public class BasePage {
 
 	public String getCodigo(By by) {
 		return getDriver().findElement(by).getAttribute("value");
-	}
+	}	
 	
-	public void capturaScreenchot(String nomeCT) throws IOException { 
-		
-		TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
-		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(arquivo, new File("target"+File.separator+"screenshot"+File.separator + nomeCT  + ".jpg"));
-	}
 }

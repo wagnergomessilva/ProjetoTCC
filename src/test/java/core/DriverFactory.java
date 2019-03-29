@@ -8,8 +8,9 @@ public class DriverFactory {
 
 	private static WebDriver driver;
 
-	private DriverFactory() {}
-	
+	private DriverFactory() {
+	}
+
 	public static WebDriver getDriver() {
 		if (driver == null) {
 			switch (Propriedades.NAVEGADOR) {
@@ -28,10 +29,11 @@ public class DriverFactory {
 	}
 
 	public static void killDriver() {
-		//WebDriver driver = getDriver();
+		// WebDriver driver = getDriver();
 		if (driver != null) {
 			driver.quit();
 			driver = null;
 		}
 	}
+	
 }
