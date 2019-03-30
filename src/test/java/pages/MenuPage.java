@@ -33,4 +33,10 @@ public class MenuPage extends BasePage {
 		clicarNoResultadoDaPesquisa("preresultadoPesquisa");
 	}
 
+	public void acessaTelaApontamentoProducao() {
+		buscaTelasSistemaClicar("iconeNavFerramentaPesquisa");
+		escrever("inputCaixaPesquisa", "PCP046");
+		clicarNoResultadoDaPesquisa("preresultadoPesquisa");		
+	}
+
 }

@@ -1,26 +1,17 @@
 package pages;
 
 import static core.DriverFactory.getDriver;
+import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import core.DriverFactory;
-import cucumber.api.Scenario;
 
 public class BasePage {
 	
@@ -42,6 +33,10 @@ public class BasePage {
 	
 	public String obterValorComXpath(String xpath) {
 		return getDriver().findElement(By.xpath(xpath)).getText();
+	}
+	
+	public String obterValorComId(String id_campo) {
+		return getDriver().findElement(By.id(id_campo)).getAttribute("value");
 	}
 
 	public void clicarCheckBoxId(String id) {
@@ -114,6 +109,14 @@ public class BasePage {
 
 	public String getCodigo(By by) {
 		return getDriver().findElement(by).getAttribute("value");
+	}
+	
+	public String getData(By by) {
+		return getDriver().findElement(by).getAttribute("value");
 	}	
+	
+	public void validaAlertaPreencherCampos() {
+		assertEquals("Preencha todos os campos requeridos.", alertaObterTextoEAceita());
+	}
 	
 }

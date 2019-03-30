@@ -1,5 +1,6 @@
 package pages;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
@@ -47,16 +48,29 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 	}
 
 	public void clicarBotaoFinalizarOP() {
-		clicarBotaId("btnConfirmInsumo");		
+		clicarBotaId("btnConfirmInsumo");
+	}
+
+	public void clicarBotaoFinalizarOPAbaItem() {
+		clicarBotaId("btnFinalizProd");
 	}
 
 	public void validaAlertaOPFinalizadaSucesso() {
-		assertTrue(alertaObterTextoECancela().startsWith("Ordem de produção finalizada com sucesso."));		
+		assertTrue(alertaObterTextoECancela().startsWith("Ordem de produção finalizada com sucesso."));
 	}
 
 	public String obterCodigoOP(String id_campo) {
-		String teste = getCodigo(By.id(id_campo));
-		System.out.println(teste);
-		return teste;
+		String codigo = getCodigo(By.id(id_campo));
+		return codigo;
+	}
+
+	public String obterDataEmissaoOP(String id_campo) {
+		String data = getCodigo(By.id(id_campo));
+		return data;
+	}
+
+	public void validaQtdeProduzir(String qtdeProduzir) {
+		String qtdeProduzirRetornada = obterValorComXpath("//table[@class='cTable']//tr[@class='trList cursor']//td[6]");
+		assertEquals(qtdeProduzir, qtdeProduzirRetornada);
 	}
 }

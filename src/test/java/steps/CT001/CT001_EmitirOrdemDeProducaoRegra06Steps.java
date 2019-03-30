@@ -1,4 +1,4 @@
-package steps;
+package steps.CT001;
 
 import static core.DriverFactory.killDriver;
 
@@ -11,7 +11,6 @@ import org.openqa.selenium.TakesScreenshot;
 
 import core.DriverFactory;
 import core.Propriedades;
-import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
@@ -31,7 +30,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 	private ConfiguradorOrdemProducaoPage confiOP = new ConfiguradorOrdemProducaoPage();
 	private OrdemDeProducaoPCP045Page ordemProd = new OrdemDeProducaoPCP045Page();
 	private EntradaProdutoAcabadoPage entProAcabado = new EntradaProdutoAcabadoPage();
-	KardexPage kardex = new KardexPage();
+	private KardexPage kardex = new KardexPage();
 	
 	//variaveis globais
 	
@@ -67,6 +66,8 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		confiOP.validaAlertaPreencherCampos();
 		confiOP.clicarAbaImpressao();
 		confiOP.setLayoutImpressaoOP("0");
+		confiOP.clicarAbaMovtoEstoque();
+		confiOP.clicarCheckBoxInsumoSemSaldo();
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaSalvoComSucesso();
 	}
@@ -101,6 +102,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		ordemProd.clicarAbaReservaInsumos();
 		ordemProd.esperaFixa(300);
 		ordemProd.clicarBotaoFinalizarOP();
+		ordemProd.esperaFixa(300);
 		ordemProd.validaAlertaOPFinalizadaSucesso();
 	}
 
@@ -113,7 +115,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		entProAcabado.clicarBotaoConfirmarEPA();
 		entProAcabado.validaAlertaSalvoComSucesso();
 		
-		codEPA = entProAcabado.obterCodigoEPA("epcod"); //Obtem o código da EPA para posteriormente validar na tela de kardex
+		codEPA = entProAcabado.obterCodigoEPA(); //Obtem o código da EPA para posteriormente validar na tela de kardex
 		
 		entProAcabado.setCodigoOrdemProducao(codigoOP);
 		entProAcabado.validaProduto(codProduto, "epiproduto2");
@@ -139,10 +141,10 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 	}
 	
 	@After(order = 1)
-	public void screenshot(Scenario cenario) throws IOException {		
+	public void screenshot() throws IOException {		
 		TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
 		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(arquivo, new File("target"+File.separator+"screenshot"+File.separator + cenario.getId()  + ".jpg"));
+		FileUtils.copyFile(arquivo, new File("target"+File.separator+"screenshot"+File.separator + casoTeste  + ".jpg"));
 	}
 	
 	@After(order = 0)

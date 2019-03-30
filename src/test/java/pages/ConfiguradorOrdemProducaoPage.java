@@ -27,6 +27,10 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 	public void clicarCheckboxRegra06() {
 		clicarCheckBoxId("intconfgercfg6");
 	}
+	
+	public void clicarCheckboxRegra02() {
+		clicarCheckBoxId("intconfgercfg2");
+	}
 
 	public void clicarAbaConfigIniciais() {
 		clicarAba("itemaba2");
@@ -51,6 +55,19 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 
 	public void setLayoutImpressaoOP(String valor) {
 		selecionarComboBox("intordprodesp", valor);
+	}
+
+	public void clicarCheckboxRegra12() {
+		clicarCheckBoxId("intconfgercfg12");		
+	}
+
+	public void clicarAbaMovtoEstoque() {
+		clicarAba("itemaba4");		
+	}
+
+	public void clicarCheckBoxInsumoSemSaldo() {
+		clicarCheckBoxId("bolinssemsalcfg");
+		
 	}
 
 }

@@ -34,10 +34,24 @@ public class EntradaProdutoAcabadoPage extends BasePage {
 		clicarBotaId("btnConfirmInsumo");
 	}
 
-	public String obterCodigoEPA(String id_campo) {
-		String teste = getCodigo(By.id(id_campo));
-		System.out.println(teste);
-		return teste;
+	public String obterCodigoEPA() {
+		String codigo = getCodigo(By.id("epcod"));
+		return codigo;
+	}
+
+	public void clicarBotaoPesquisarEPA() {
+		clicarBotaId("btnPesquisar");		
+	}
+
+	public void validaEPAGerada(String codigoOP, String codApontamento) {
+		String retorno = obterValorComId("epcoment");
+		System.out.println(retorno);
+		assertEquals("Entrada de produção gerada a partir da Ordem de Produção "+codigoOP+", Apontamento "+codApontamento+".", retorno);		
+	}
+
+	public void clicarBotaoEditarEPA() {
+		clicarBotaXpath("//td[@class='itens']//img[@alt='Alterar']");
+		
 	}
 
 }

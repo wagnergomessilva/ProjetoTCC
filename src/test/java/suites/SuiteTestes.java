@@ -4,14 +4,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import runners.RunnerOrdemDeProducaoTest;
-import runners.RunnerOutrasNotasFiscaisTest;
+import runners.RunnerCT001Test;
+import runners.RunnerCT002Test;
+import runners.RunnerCT003Test;
 
 
 @RunWith(Suite.class)
 @SuiteClasses({	
-	RunnerOrdemDeProducaoTest.class,
-	RunnerOutrasNotasFiscaisTest.class
+	//RunnerCT001Test.class,
+	//RunnerCT002Test.class,
+	RunnerCT003Test.class
 })
 public class SuiteTestes {
 
