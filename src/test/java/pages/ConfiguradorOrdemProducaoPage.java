@@ -60,6 +60,10 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 	public void clicarCheckboxRegra12() {
 		clicarCheckBoxId("intconfgercfg12");		
 	}
+	
+	public void clicarCheckboxRegra18() {
+		clicarCheckBoxId("intconfgercfg18");		
+	}
 
 	public void clicarAbaMovtoEstoque() {
 		clicarAba("itemaba4");		

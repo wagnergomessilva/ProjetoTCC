@@ -122,7 +122,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		entProAcabado.clicarBotaAdicionarEPA();
 		entProAcabado.esperaFixa(700);
 		entProAcabado.clicarBotaoConfirmaInsumo();
-		entProAcabado.esperaFixa(2000);
+		entProAcabado.esperaFixa(2000);		
 	}
  
 	@E("^consulto o estoque do produto (\\d+)$")
@@ -142,9 +142,11 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 	
 	@After(order = 1)
 	public void screenshot() throws IOException {		
+
 		TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
 		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(arquivo, new File("target"+File.separator+"screenshot"+File.separator + casoTeste  + ".jpg"));
+		FileUtils.copyFile(arquivo,
+				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));
 	}
 	
 	@After(order = 0)

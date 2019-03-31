@@ -70,7 +70,14 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 	}
 
 	public void validaQtdeProduzir(String qtdeProduzir) {
-		String qtdeProduzirRetornada = obterValorComXpath("//table[@class='cTable']//tr[@class='trList cursor']//td[6]");
-		assertEquals(qtdeProduzir, qtdeProduzirRetornada);
+		if (qtdeProduzir == "15") {
+			String qtdeProduzirRetornada = obterValorComXpath(
+					"//table[@class='cTable']//tr[@class='trList cursor']//td[6]");
+			assertEquals(qtdeProduzir, qtdeProduzirRetornada);
+		} else if (qtdeProduzir == "10") {
+			String qtdeProduzirRetornada = obterValorComXpath(
+					"//table[@class='cTable']//tr[@class='trList cursor'][2]//td[6]");
+			assertEquals(qtdeProduzir, qtdeProduzirRetornada);
+		}
 	}
 }

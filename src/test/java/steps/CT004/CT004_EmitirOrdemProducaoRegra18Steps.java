@@ -1,4 +1,4 @@
-package steps.CT003;
+package steps.CT004;
 
 import static core.DriverFactory.killDriver;
 
@@ -24,7 +24,7 @@ import pages.LoginPage;
 import pages.MenuPage;
 import pages.OrdemDeProducaoPCP045Page;
 
-public class CT003_EmitirOrdemProducaoRegra12Steps {
+public class CT004_EmitirOrdemProducaoRegra18Steps {
 
 	private LoginPage loginPage = new LoginPage();
 	private MenuPage menuPage = new MenuPage();
@@ -35,18 +35,20 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 	private KardexPage kardex = new KardexPage();
 
 	// variaveis globais
-	String casoTeste = "CT003 - Ordem Producao Regra 12 com EPA na ultima etapa do apontamento";
+	String casoTeste = "CT004 - Ordem Producao Regra 18 com 2 produtos";
 
-	String codigoOP;
-	String codProduto;
-	String codApontamento;
-	String codEPA;
-	String dataOP;
-	String qtdeProd;
-	String dataApontamento;
+	String codigoOP 		= "";
+	String codProduto 		= "";
+	String codProduto2 		= "";
+	String qtdeProd 		= "";
+	String qtdeProd2 		= "";
+	String codApontamento 	= "";
+	String codEPA 			= "";
+	String dataOP 			= "";
+	String dataApontamento 	= "";
 
-	@Dado("^que cadastro uma configuração de ordem de produção com a regra (\\d+)$")
-	public void queCadastroUmaConfiguraçãoDeOrdemDeProduçãoComARegra(int numeroRegra) throws Throwable {
+	@Dado("^que cadastro um configurador de Ordem de produção com a regra (\\d+)$")
+	public void queCadastroUmConfiguradorDeOrdemDeProduçãoComARegra(String numeroRegra) throws Throwable {
 		loginPage.acessarTelaSistema();
 		loginPage.setUsuario("robohom");
 		loginPage.setSenha("robo123");
@@ -62,7 +64,7 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		confiOP.validaAlertaSalvoComSucesso();
 		confiOP.clicarAbaCadastro();
 		confiOP.clicarAbaConfigIniciais();
-		confiOP.clicarCheckboxRegra12();
+		confiOP.clicarCheckboxRegra18();
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaPreencherCampos();
 		confiOP.clicarAbaConfigIniciais();
@@ -71,18 +73,16 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaPreencherCampos();
 		confiOP.clicarAbaImpressao();
-		confiOP.setLayoutImpressaoOP("0");
-		confiOP.clicarAbaMovtoEstoque();
-		confiOP.clicarCheckBoxInsumoSemSaldo();
+		confiOP.setLayoutImpressaoOP("1");
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaSalvoComSucesso();
 	}
 
-	@E("^realizo o cadastro uma ordem de produção utilizando esta regra, informando o cliente de código (\\d+)$")
+	@E("^realizo o cadastro uma Ordem de produção utilizando esta regra, informando o cliente de código (\\d+)$")
 	public void realizoOCadastroUmaOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String codigoCliente)
 			throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(1000);
+		ordemProd.esperaFixa(2000);
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente(codigoCliente);
 		ordemProd.setOrigemOP("0");
@@ -93,42 +93,45 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		dataOP = ordemProd.obterDataEmissaoOP("datemisop");
 	}
 
-	@E("^insiro o produto de código (\\d+) com quantidade (\\d+)$")
+	@E("^insiro o Produto de código (\\d+) com quantidade (\\d+)$")
 	public void insiroOProdutoDeCódigoComQuantidade(String codigoProduto, String qtdeProduzir) throws Throwable {
-		codProduto = codigoProduto;
-		qtdeProd = qtdeProduzir; // guarda a quantidade a produzir na variavel global "qtdeProd" para posteriormente validar o saldo da OP na tela de apontamento
+		if (codProduto == "") {
+			codProduto = codigoProduto;
+			qtdeProd = qtdeProduzir;
+		} else {
+			codProduto2 = codigoProduto;
+			qtdeProd2 = qtdeProduzir;
+		}		
 		ordemProd.clicarAbaItemProduzir();
 		ordemProd.setProduto(codigoProduto);
 		ordemProd.setQuantidadeProduzir(qtdeProduzir);
 		ordemProd.clicarBotaoAdicionar();
 		ordemProd.esperaFixa(300);
 		ordemProd.validaQtdeProduzir(qtdeProduzir);
-		ordemProd.clicarBotaoConfirmarProduto();
-		ordemProd.clicarAbaItemProduzir();
 	}
 
-	@Quando("^finalizo a ordem de produção$")
+	@Quando("^finalizo a Ordem de Produção$")
 	public void finalizoAOrdemDeProdução() throws Throwable {
-		ordemProd.clicarAbaReservaInsumos();
-		ordemProd.esperaFixa(300);
-		ordemProd.clicarBotaoFinalizarOP();
-		ordemProd.validaAlertaOPFinalizadaSucesso();		
+		ordemProd.clicarBotaoFinalizarOPAbaItem();
+		ordemProd.validaAlertaOPFinalizadaSucesso();
 	}
 
-	@E("^cadastro o apontamento desta ordem de produção$")
+	@E("^cadastro o Apontamento desta Ordem de Produção$")
 	public void cadastroOApontamentoDestaOrdemDeProdução() throws Throwable {
 		menuPage.acessaTelaApontamentoProducao();
 		apontamentoProd.esperaFixa(1000);
 		apontamentoProd.alternarFocoJanela(3);
 		apontamentoProd.setCodigoOrdemProducao(codigoOP);
-		apontamentoProd.validaProduto(codProduto, "objprodutap2");
+		apontamentoProd.setProdutoApontamento(codProduto);
+
 		apontamentoProd.setEtapa("8");
-		apontamentoProd.clicarBotaoConfirmarApontamento();		
+		apontamentoProd.clicarBotaoConfirmarApontamento();
+		codApontamento = apontamentoProd.obterCodigoApontamento();
 		dataApontamento = apontamentoProd.obterDataApontamento();
 		apontamentoProd.validaDataProducao(dataOP, "datdataprodinf");
 		apontamentoProd.validaQtdeSaldoOP(qtdeProd);
 		apontamentoProd.clicarBotaoAdicionarItemApontamento();
-		apontamentoProd.esperaFixa(300);
+		apontamentoProd.esperaFixa(500);
 		apontamentoProd.validaDataApontamento(dataApontamento);
 		apontamentoProd.validaQtdeProduzida(qtdeProd);
 		apontamentoProd.clicarBotaoFinalizarApontamento();
@@ -136,43 +139,78 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 
 		// cadastrando a segunda etapa do apontamento
 		apontamentoProd.setCodigoOrdemProducao(codigoOP);
+		apontamentoProd.setProdutoApontamento(codProduto);
 		apontamentoProd.setEtapa("11");
 		apontamentoProd.clicarBotaoConfirmarApontamento();
-		codApontamento = apontamentoProd.obterCodigoApontamento();
 		apontamentoProd.validaDataProducao(dataOP, "datdataprodinf");
 		apontamentoProd.validaQtdeSaldoOP(qtdeProd);
 		apontamentoProd.clicarBotaoAdicionarItemApontamento();
-		apontamentoProd.esperaFixa(300);
+		apontamentoProd.esperaFixa(500);
 		apontamentoProd.validaDataApontamento(dataApontamento);
 		apontamentoProd.validaQtdeProduzida(qtdeProd);
 		apontamentoProd.clicarBotaoFinalizarApontamento();
-		apontamentoProd.validaAlertaPreencherCampos();
-		apontamentoProd.esperaFixa(300);
-		apontamentoProd.setTurno("1");
-		apontamentoProd.clicarBotaoFinalizarApontamentoEPA();
-		apontamentoProd.esperaFixa(1000);
-		apontamentoProd.clicarBotaoConfirmarInsumos();		
+		apontamentoProd.validaAlertaApontamentoFinalizado();
+
+		// cadastrar apontamento do segundo item da ordem de produção
+		apontamentoProd.setCodigoOrdemProducao(codigoOP);
+		apontamentoProd.setProdutoApontamento(codProduto2);
+		apontamentoProd.setEtapa("8");
+		apontamentoProd.clicarBotaoConfirmarApontamento();
+		codApontamento = apontamentoProd.obterCodigoApontamento();
+		dataApontamento = apontamentoProd.obterDataApontamento();
+		apontamentoProd.validaDataProducao(dataOP, "datdataprodinf");
+		apontamentoProd.validaQtdeSaldoOP(qtdeProd2);
+		apontamentoProd.clicarBotaoAdicionarItemApontamento();
+		apontamentoProd.esperaFixa(500);
+		apontamentoProd.validaDataApontamento(dataApontamento);
+		apontamentoProd.validaQtdeProduzida(qtdeProd2);
+		apontamentoProd.clicarBotaoFinalizarApontamento();
+		apontamentoProd.validaAlertaApontamentoFinalizado();
+
+		// cadastrando a segunda etapa do apontamento
+		apontamentoProd.setCodigoOrdemProducao(codigoOP);
+		apontamentoProd.setProdutoApontamento(codProduto2);
+		apontamentoProd.setEtapa("11");
+		apontamentoProd.clicarBotaoConfirmarApontamento();
+		apontamentoProd.validaDataProducao(dataOP, "datdataprodinf");
+		apontamentoProd.validaQtdeSaldoOP(qtdeProd2);
+		apontamentoProd.clicarBotaoAdicionarItemApontamento();
+		apontamentoProd.esperaFixa(500);
+		apontamentoProd.validaDataApontamento(dataApontamento);
+		apontamentoProd.validaQtdeProduzida(qtdeProd2);
+		apontamentoProd.clicarBotaoFinalizarApontamento();
 		apontamentoProd.validaAlertaApontamentoFinalizado();
 	}
 
-	@Entao("^o sistema deve gerar automaticamente a entrada de produto acabado do produto (\\d+) com (\\d+) quantidades$")
-	public void oSistemaDeveGerarAutomaticamenteAEntradaDeProdutoAcabadoDoProdutoComQuantidades(int arg1, int arg2) throws Throwable {
+	@E("^cadastro a Entrada de produto acabado desta Ordem de Produção$")
+	public void cadastroAEntradaDeProdutoAcabadoDestaOrdemDeProdução() throws Throwable {
 		menuPage.acessaTelaEntradaProdutoAcabado();
-		entProAcabado.esperaFixa(1000);
-		entProAcabado.alternarFocoJanela(4);		
-		entProAcabado.clicarBotaoPesquisarEPA();
+		entProAcabado.esperaFixa(700);
+		entProAcabado.alternarFocoJanela(4);
+		entProAcabado.setTurno("1");
+		entProAcabado.clicarBotaoConfirmarEPA();
+		entProAcabado.validaAlertaSalvoComSucesso();
+		
+		codEPA = entProAcabado.obterCodigoEPA(); //Obtem o código da EPA para posteriormente validar na tela de kardex
+		
 		entProAcabado.setCodigoOrdemProducao(codigoOP);
-		entProAcabado.clicarBotaoPesquisarEPA();
-		entProAcabado.esperaFixa(300);
-		entProAcabado.clicarBotaoEditarEPA();
-		entProAcabado.esperaFixa(1000);
-		codEPA = entProAcabado.obterCodigoEPA();
-		System.out.println(codEPA);
-		entProAcabado.validaEPAGerada(codigoOP, codApontamento);
+		entProAcabado.setProdutoEPA(codProduto);
+		entProAcabado.clicarBotaAdicionarEPA();
+		entProAcabado.esperaFixa(700);
+		entProAcabado.clicarBotaoConfirmaInsumo();
+		entProAcabado.esperaFixa(2000);		
+
+		//inserindo o segundo produto na entrada de produto acabado
+		entProAcabado.setCodigoOrdemProducao(codigoOP);
+		entProAcabado.setProdutoEPA(codProduto2);
+		entProAcabado.clicarBotaAdicionarEPA();
+		entProAcabado.esperaFixa(700);
+		entProAcabado.clicarBotaoConfirmaInsumo();
+		entProAcabado.esperaFixa(2000);		
 	}
 
-	@E("^deve movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
-	public void deveMovimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde) throws Throwable {
+	@Entao("^o sistema deve movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
+	public void oSistemaDeveMovimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde) throws Throwable {
 		menuPage.acessaTelaKardex();
 		kardex.esperaFixa(700);
 		kardex.alternarFocoJanela(5);
@@ -180,16 +218,26 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		kardex.clicarBotaoPesquisarKardex();
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
-		kardex.validaQtdeEPA(codEPA, qtde); 
+		kardex.validaQtdeEPA(codEPA, qtde);
+		kardex.clicarBotaoNovo();
+	}
+
+	@E("^movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
+	public void movimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde) throws Throwable {
+		kardex.setProdutoConsulta(produto);
+		kardex.clicarBotaoPesquisarKardex();
+		kardex.esperaFixa(1000);
+		kardex.validaNumeroEPA(codEPA);
+		kardex.validaQtdeEPA(codEPA, qtde);
 	}
 
 	@After(order = 1)
 	public void screenshot() throws IOException {
-		
+
 		TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
 		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
 		FileUtils.copyFile(arquivo,
-				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));	
+				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));
 	}
 
 	@After(order = 0)

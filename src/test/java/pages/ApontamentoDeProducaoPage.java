@@ -88,4 +88,8 @@ public class ApontamentoDeProducaoPage extends BasePage {
 		clicarBotaId("btnConfirmInsumo");
 	}
 
+	public void setProdutoApontamento(String produto) {
+		escrever("objprodutap2", produto);
+	}
+
 }

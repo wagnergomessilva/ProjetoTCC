@@ -27,5 +27,9 @@ public class KardexPage extends BasePage{
 		assertEquals(qtde, qtdeRetornada);
 		
 	}
+
+	public void clicarBotaoNovo() {
+		clicarBotaId("btnLimpar");		
+	}
 	
 }

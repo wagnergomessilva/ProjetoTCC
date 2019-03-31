@@ -54,4 +54,25 @@ public class EntradaProdutoAcabadoPage extends BasePage {
 		
 	}
 
+	public void setProdutoEPA(String codProduto) {
+		escrever("epiproduto2", codProduto);
+	}
+
+	public void setQuantidadeProduzir(String qtde) {
+		escrever("epiqtde", qtde);		
+	}
+
+	public void clicarBotaoConfirmaInsumoRequisicao() {
+		clicarBotaId("btnSave3");		
+	}
+
+	public void setSolicitante(String texto) {
+		escrever("epsolicitante", texto);
+		
+	}
+
+	public void setComentario(String texto) {
+		escrever("epcoment", texto);		
+	}
+
 }
