@@ -13,10 +13,10 @@ import runners.RunnerCT005Test;
 
 @RunWith(Suite.class)
 @SuiteClasses({	
-	//RunnerCT001Test.class,
-	//RunnerCT002Test.class,
-	//RunnerCT003Test.class,
-	//RunnerCT004Test.class,
+	RunnerCT001Test.class,
+	RunnerCT002Test.class,
+	RunnerCT003Test.class,
+	RunnerCT004Test.class,
 	RunnerCT005Test.class
 })
 public class SuiteTestes {

@@ -7,18 +7,21 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage {
-	
+
 	public void escrever(String id_campo, String texto) {
 		getDriver().findElement(By.id(id_campo)).sendKeys(texto);
 	}
-	
+
 	public void escreverEDarEnter(String id_campo, String texto) {
 		getDriver().findElement(By.id(id_campo)).sendKeys(texto, Keys.ENTER);
 	}
@@ -30,11 +33,11 @@ public class BasePage {
 	public void clicarBotaXpath(String xpath) {
 		getDriver().findElement(By.xpath(xpath)).click();
 	}
-	
+
 	public String obterValorComXpath(String xpath) {
 		return getDriver().findElement(By.xpath(xpath)).getText();
 	}
-	
+
 	public String obterValorComId(String id_campo) {
 		return getDriver().findElement(By.id(id_campo)).getAttribute("value");
 	}
@@ -99,24 +102,35 @@ public class BasePage {
 		getDriver().manage().timeouts().implicitlyWait(segundos, TimeUnit.SECONDS);
 	}
 
-	public void esperaExplicita(String id) {
-		WebDriverWait wait = new WebDriverWait(getDriver(), 10);
-		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.id(id)));
-		//wait.until(ExpectedConditions.textToBe(By.id(id), texto));
-		//wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("/html/body/div[1]/div/img")));
+	public void esperaExplicita(String id) { //método que espera até que determinado elemento seja clicável na tela
+		WebDriverWait wait = new WebDriverWait(getDriver(), 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated((By.id(id))));
+		wait.until(ExpectedConditions.elementToBeClickable(By.id(id)));
 		
+	}
+
+	public void esperaTelaCarregar() {
+		WebDriver driver = null;
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+			}
+		};
+		
+		wait.until(pageLoadCondition);
 	}
 
 	public String getCodigo(By by) {
 		return getDriver().findElement(by).getAttribute("value");
 	}
-	
+
 	public String getData(By by) {
 		return getDriver().findElement(by).getAttribute("value");
-	}	
-	
+	}
+
 	public void validaAlertaPreencherCampos() {
 		assertEquals("Preencha todos os campos requeridos.", alertaObterTextoEAceita());
 	}
-	
+
 }
