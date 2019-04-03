@@ -2,8 +2,15 @@ package steps.CT004;
 
 import static core.DriverFactory.killDriver;
 
+import java.awt.AWTException;
+import java.awt.HeadlessException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -232,12 +239,14 @@ public class CT004_EmitirOrdemProducaoRegra18Steps {
 	}
 
 	@After(order = 1)
-	public void screenshot() throws IOException {
+	public void screenshot() throws IOException, HeadlessException, AWTException {
 
-		TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
+		/*TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
 		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
 		FileUtils.copyFile(arquivo,
-				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));
+				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));*/
+		BufferedImage screenchot = new Robot().createScreenCapture(new Rectangle(java.awt.Toolkit.getDefaultToolkit().getScreenSize()));
+		ImageIO.write(screenchot, "jpg", new File("target/screenshot/"+casoTeste+".jpg"));
 	}
 
 	@After(order = 0)
