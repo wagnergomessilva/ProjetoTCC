@@ -1,23 +1,9 @@
 package steps.CT001;
 
-import static core.DriverFactory.killDriver;
-
 import java.awt.AWTException;
 import java.awt.HeadlessException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-
-import core.DriverFactory;
-import core.Propriedades;
 import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
@@ -38,11 +24,11 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 	private OrdemDeProducaoPCP045Page ordemProd = new OrdemDeProducaoPCP045Page();
 	private EntradaProdutoAcabadoPage entProAcabado = new EntradaProdutoAcabadoPage();
 	private KardexPage kardex = new KardexPage();
-	
-	//variaveis globais
-	
-	String casoTeste = "CT001 - Ordem Producao Regra 06"; //varivael que será utilizada para nomear o Screenshot
-	
+
+	// variaveis globais
+
+	String casoTeste = "CT001 - Ordem Producao Regra 06"; // varivael que será utilizada para nomear o Screenshot
+
 	String codigoOP;
 	String codProduto;
 	String codEPA;
@@ -57,7 +43,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		menuPage.acessaTelaConfiguradorDeOrdemProducao();
 
 		confiOP.alternarFocoJanela(1);
-		confiOP.setDescricaoRegra("REGRA "+numeroRegra+"");
+		confiOP.setDescricaoRegra("REGRA " + numeroRegra + "");
 		confiOP.setOrigemValue("0");
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaSalvoComSucesso();
@@ -81,7 +67,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 
 	@E("^cadastro uma ordem de produção com esta regra$")
 	public void cadastro_uma_ordem_de_produção_com_esta_regra() throws Throwable {
-		
+
 		menuPage.acessaTelaOrdemProducaoPCP045();
 		ordemProd.esperaFixa(700);
 		ordemProd.alternarFocoJanela(2);
@@ -101,7 +87,7 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		ordemProd.setQuantidadeProduzir(qtdeProduzir);
 		ordemProd.clicarBotaoAdicionar();
 		ordemProd.clicarBotaoConfirmarProduto();
-		ordemProd.clicarAbaItemProduzir(); 
+		ordemProd.clicarAbaItemProduzir();
 	}
 
 	@Quando("^finalizo a Ordem de produção$")
@@ -121,17 +107,17 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		entProAcabado.setTurno("1");
 		entProAcabado.clicarBotaoConfirmarEPA();
 		entProAcabado.validaAlertaSalvoComSucesso();
-		
-		codEPA = entProAcabado.obterCodigoEPA(); //Obtem o código da EPA para posteriormente validar na tela de kardex
-		
+
+		codEPA = entProAcabado.obterCodigoEPA(); // Obtem o código da EPA para posteriormente validar na tela de kardex
+
 		entProAcabado.setCodigoOrdemProducao(codigoOP);
 		entProAcabado.validaProduto(codProduto, "epiproduto2");
 		entProAcabado.clicarBotaAdicionarEPA();
 		entProAcabado.esperaFixa(700);
 		entProAcabado.clicarBotaoConfirmaInsumo();
-		entProAcabado.esperaFixa(2000);		
+		entProAcabado.esperaFixa(2000);
 	}
- 
+
 	@E("^consulto o estoque do produto (\\d+)$")
 	public void consulto_o_estoque_do_produto(String produto) throws Throwable {
 		menuPage.acessaTelaKardex();
@@ -146,22 +132,14 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
 	}
-	
-	@After(order = 1)
-	public void screenshot() throws IOException, HeadlessException, AWTException {		
 
-		/*TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
-		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(arquivo,
-				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));*/
-		BufferedImage screenchot = new Robot().createScreenCapture(new Rectangle(java.awt.Toolkit.getDefaultToolkit().getScreenSize()));
-		ImageIO.write(screenchot, "jpg", new File("target/screenshot/"+casoTeste+".jpg"));
+	@After(order = 1)
+	public void screenshot() throws IOException, HeadlessException, AWTException {
+		ordemProd.screenshotTela(casoTeste);
 	}
-	
+
 	@After(order = 0)
 	public void finaliza() throws IOException {
-		if (Propriedades.FECHAR_BROWSER) {
-			killDriver();
-		}
+		ordemProd.finalizarNavegador();
 	}
 }

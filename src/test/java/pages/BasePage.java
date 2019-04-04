@@ -1,9 +1,19 @@
 package pages;
 
 import static core.DriverFactory.getDriver;
+import static core.DriverFactory.killDriver;
 import static org.junit.Assert.assertEquals;
 
+import java.awt.AWTException;
+import java.awt.HeadlessException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -15,6 +25,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import core.Propriedades;
 
 public class BasePage {
 
@@ -102,11 +114,11 @@ public class BasePage {
 		getDriver().manage().timeouts().implicitlyWait(segundos, TimeUnit.SECONDS);
 	}
 
-	public void esperaExplicita(String id) { //método que espera até que determinado elemento seja clicável na tela
+	public void esperaExplicita(String id) { // método que espera até que determinado elemento seja clicável na tela
 		WebDriverWait wait = new WebDriverWait(getDriver(), 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated((By.id(id))));
 		wait.until(ExpectedConditions.elementToBeClickable(By.id(id)));
-		
+
 	}
 
 	public void esperaTelaCarregar() {
@@ -117,7 +129,7 @@ public class BasePage {
 				return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
 			}
 		};
-		
+
 		wait.until(pageLoadCondition);
 	}
 
@@ -131,6 +143,21 @@ public class BasePage {
 
 	public void validaAlertaPreencherCampos() {
 		assertEquals("Preencha todos os campos requeridos.", alertaObterTextoEAceita());
+	}
+
+	public void finalizarNavegador() {
+		if (Propriedades.FECHAR_BROWSER) {
+			killDriver();
+		}
+	}
+	
+	public void screenshotTela(String casoTeste) throws IOException, HeadlessException, AWTException {
+		/*TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
+		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
+		FileUtils.copyFile(arquivo,
+				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));*/
+		BufferedImage screenchot = new Robot().createScreenCapture(new Rectangle(java.awt.Toolkit.getDefaultToolkit().getScreenSize()));
+		ImageIO.write(screenchot, "jpg", new File("target/screenshot/"+casoTeste+".jpg"));
 	}
 
 }

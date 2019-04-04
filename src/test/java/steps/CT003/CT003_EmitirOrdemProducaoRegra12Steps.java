@@ -1,23 +1,9 @@
 package steps.CT003;
 
-import static core.DriverFactory.killDriver;
-
 import java.awt.AWTException;
 import java.awt.HeadlessException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-
-import core.DriverFactory;
-import core.Propriedades;
 import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
@@ -103,7 +89,8 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 	@E("^insiro o produto de código (\\d+) com quantidade (\\d+)$")
 	public void insiroOProdutoDeCódigoComQuantidade(String codigoProduto, String qtdeProduzir) throws Throwable {
 		codProduto = codigoProduto;
-		qtdeProd = qtdeProduzir; // guarda a quantidade a produzir na variavel global "qtdeProd" para posteriormente validar o saldo da OP na tela de apontamento
+		qtdeProd = qtdeProduzir; // guarda a quantidade a produzir na variavel global "qtdeProd" para
+									// posteriormente validar o saldo da OP na tela de apontamento
 		ordemProd.clicarAbaItemProduzir();
 		ordemProd.setProduto(codigoProduto);
 		ordemProd.setQuantidadeProduzir(qtdeProduzir);
@@ -119,7 +106,7 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		ordemProd.clicarAbaReservaInsumos();
 		ordemProd.esperaFixa(300);
 		ordemProd.clicarBotaoFinalizarOP();
-		ordemProd.validaAlertaOPFinalizadaSucesso();		
+		ordemProd.validaAlertaOPFinalizadaSucesso();
 	}
 
 	@E("^cadastro o apontamento desta ordem de produção$")
@@ -130,7 +117,7 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		apontamentoProd.setCodigoOrdemProducao(codigoOP);
 		apontamentoProd.validaProduto(codProduto, "objprodutap2");
 		apontamentoProd.setEtapa("8");
-		apontamentoProd.clicarBotaoConfirmarApontamento();		
+		apontamentoProd.clicarBotaoConfirmarApontamento();
 		dataApontamento = apontamentoProd.obterDataApontamento();
 		apontamentoProd.validaDataProducao(dataOP, "datdataprodinf");
 		apontamentoProd.validaQtdeSaldoOP(qtdeProd);
@@ -158,15 +145,16 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		apontamentoProd.setTurno("1");
 		apontamentoProd.clicarBotaoFinalizarApontamentoEPA();
 		apontamentoProd.esperaFixa(1000);
-		apontamentoProd.clicarBotaoConfirmarInsumos();		
+		apontamentoProd.clicarBotaoConfirmarInsumos();
 		apontamentoProd.validaAlertaApontamentoFinalizado();
 	}
 
 	@Entao("^o sistema deve gerar automaticamente a entrada de produto acabado do produto (\\d+) com (\\d+) quantidades$")
-	public void oSistemaDeveGerarAutomaticamenteAEntradaDeProdutoAcabadoDoProdutoComQuantidades(int arg1, int arg2) throws Throwable {
+	public void oSistemaDeveGerarAutomaticamenteAEntradaDeProdutoAcabadoDoProdutoComQuantidades(int arg1, int arg2)
+			throws Throwable {
 		menuPage.acessaTelaEntradaProdutoAcabado();
 		entProAcabado.esperaFixa(1000);
-		entProAcabado.alternarFocoJanela(4);		
+		entProAcabado.alternarFocoJanela(4);
 		entProAcabado.clicarBotaoPesquisarEPA();
 		entProAcabado.setCodigoOrdemProducao(codigoOP);
 		entProAcabado.clicarBotaoPesquisarEPA();
@@ -179,7 +167,8 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 	}
 
 	@E("^deve movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
-	public void deveMovimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde) throws Throwable {
+	public void deveMovimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde)
+			throws Throwable {
 		menuPage.acessaTelaKardex();
 		kardex.esperaFixa(700);
 		kardex.alternarFocoJanela(5);
@@ -187,24 +176,16 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		kardex.clicarBotaoPesquisarKardex();
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
-		kardex.validaQtdeEPA(codEPA, qtde); 
+		kardex.validaQtdeEPA(codEPA, qtde);
 	}
 
 	@After(order = 1)
 	public void screenshot() throws IOException, HeadlessException, AWTException {
-		
-		/*TakesScreenshot screenshot = (TakesScreenshot) DriverFactory.getDriver();
-		File arquivo = screenshot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(arquivo,
-				new File("target" + File.separator + "screenshot" + File.separator + casoTeste + ".jpg"));*/
-		BufferedImage screenchot = new Robot().createScreenCapture(new Rectangle(java.awt.Toolkit.getDefaultToolkit().getScreenSize()));
-		ImageIO.write(screenchot, "jpg", new File("target/screenshot/"+casoTeste+".jpg"));
+		ordemProd.screenshotTela(casoTeste);
 	}
 
 	@After(order = 0)
 	public void finaliza() throws IOException {
-		if (Propriedades.FECHAR_BROWSER) {
-			killDriver();
-		}
+		ordemProd.finalizarNavegador();
 	}
 }
