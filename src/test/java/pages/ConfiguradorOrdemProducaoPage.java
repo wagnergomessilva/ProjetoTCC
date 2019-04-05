@@ -31,10 +31,25 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 	public void clicarCheckboxRegra02() {
 		clicarCheckBoxId("intconfgercfg2");
 	}
+	
+	public void clicarCheckboxRegra03() {
+		clicarCheckBoxId("intconfgercfg3");
+	}
+	
+	public void clicarCheckboxRegra04() {
+		clicarCheckBoxId("intconfgercfg4");
+	}
+	
+	public void clicarCheckboxRegra07() {
+		clicarCheckBoxId("intconfgercfg7");
+	}
+	
+	public void clicarCheckboxRegra09() {
+		clicarCheckBoxId("intconfgercfg9");
+	}
 
 	public void clicarAbaConfigIniciais() {
 		clicarAba("itemaba2");
-
 	}
 
 	public void clicarAbaCadastro() {
@@ -70,8 +85,7 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 	}
 
 	public void clicarCheckBoxInsumoSemSaldo() {
-		clicarCheckBoxId("bolinssemsalcfg");
-		
+		clicarCheckBoxId("bolinssemsalcfg");		
 	}
 
 }
