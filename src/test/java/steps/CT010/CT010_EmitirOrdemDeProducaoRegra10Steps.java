@@ -139,7 +139,7 @@ public class CT010_EmitirOrdemDeProducaoRegra10Steps {
 	@E("^efetuo a entrada de produto acabado desta ordem de produção$")
 	public void efetuoAEntradaDeProdutoAcabadoDestaOrdemDeProdução() throws Throwable {
 		menuPage.acessaTelaEntradaProdutoAcabado();
-		entProAcabado.esperaFixa(1000);
+		entProAcabado.esperaTelaCarregar();
 		entProAcabado.alternarFocoJanela(4);
 		entProAcabado.setTurno("1");
 		entProAcabado.clicarBotaoConfirmarEPA();

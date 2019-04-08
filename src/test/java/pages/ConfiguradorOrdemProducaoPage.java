@@ -83,7 +83,7 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 	public void clicarCheckboxRegra14() {
 		clicarCheckBoxId("intconfgercfg14");		
 	}
-	
+		
 	public void clicarCheckboxRegra10() {
 		clicarCheckBoxId("intconfgercfg10");		
 	}
@@ -98,6 +98,10 @@ public class ConfiguradorOrdemProducaoPage extends BasePage {
 	
 	public void clicarCheckboxRegra16() {
 		clicarCheckBoxId("intconfgercfg16");		
+	}
+	
+	public void clicarCheckboxRegra17() {
+		clicarCheckBoxId("intconfgercfg17");		
 	}
 	
 	public void clicarCheckboxRegra18() {

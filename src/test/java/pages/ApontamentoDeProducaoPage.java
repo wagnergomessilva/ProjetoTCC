@@ -32,7 +32,11 @@ public class ApontamentoDeProducaoPage extends BasePage {
 	}
 
 	public void validaQtdeSaldoOP(String qtdeProd) {
-		assertEquals(qtdeProd, obterValorComId("saldoaponta"));
+		String qtdeRetornada = obterValorComId("saldoaponta");
+		if (qtdeProd.length() > 3) {
+			qtdeRetornada = qtdeRetornada.replace(".", ""); //retirar o ponto do milhar caso encontre, para evitar erro de assertiva
+		}
+		assertEquals(qtdeProd, qtdeRetornada);
 	}
 
 	public void clicarBotaoAdicionarItemApontamento() {
@@ -52,6 +56,9 @@ public class ApontamentoDeProducaoPage extends BasePage {
 
 	public void validaQtdeProduzida(String qtdeProd) {
 		String qtdeRetornada = obterValorComXpath("//table[@class='cTable']//tr[@class='trList cursor']//td[7]");
+		if (qtdeProd.length() > 3) {
+			qtdeRetornada = qtdeRetornada.replace(".", ""); //retirar o ponto do milhar caso encontre, para evitar erro de assertiva
+		}	
 		assertEquals(qtdeProd, qtdeRetornada);
 	}
 
