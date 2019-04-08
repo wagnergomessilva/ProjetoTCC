@@ -54,6 +54,10 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 	public void clicarBotaoFinalizarOPAbaItem() {
 		clicarBotaId("btnFinalizProd");
 	}
+	
+	public void clicarBotaoPesquisarOP() {
+		clicarBotaId("btnPesq");		
+	}
 
 	public void validaAlertaOPFinalizadaSucesso() {
 		assertTrue(alertaObterTextoECancela().startsWith("Ordem de produção finalizada com sucesso."));
@@ -69,6 +73,18 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 		return data;
 	}
 
+	public void setCodigo4OP(String codigoOP) {
+		escrever("intnumop", codigoOP);
+	}
+	
+	public void setProdutoPesquisa(String produto) {
+		escrever("produtped2", produto);
+	}
+	
+	public void clicarBotaoEditarOP() {
+		clicarBotaXpath("//table//tbody//td[12]/img");		
+	}
+
 	public void validaQtdeProduzir(String qtdeProduzir) {
 		if (qtdeProduzir == "15") {
 			String qtdeProduzirRetornada = obterValorComXpath(
@@ -80,4 +96,5 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 			assertEquals(qtdeProduzir, qtdeProduzirRetornada);
 		}
 	}
+
 }

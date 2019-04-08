@@ -1,8 +1,11 @@
-package steps.CT003;
+package steps.CT013;
+
+import static utils.DataUtils.obterDataFormatada;
 
 import java.awt.AWTException;
 import java.awt.HeadlessException;
 import java.io.IOException;
+import java.util.Date;
 
 import cucumber.api.java.After;
 import cucumber.api.java.pt.Dado;
@@ -16,8 +19,9 @@ import pages.KardexPage;
 import pages.LoginPage;
 import pages.MenuPage;
 import pages.OrdemDeProducaoPCP045Page;
+import pages.RequisicaoSaidaPage;
 
-public class CT003_EmitirOrdemProducaoRegra12Steps {
+public class CT013_EmitirOrdemDeProducaoRegra14Steps {
 
 	private LoginPage loginPage = new LoginPage();
 	private MenuPage menuPage = new MenuPage();
@@ -26,20 +30,21 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 	private EntradaProdutoAcabadoPage entProAcabado = new EntradaProdutoAcabadoPage();
 	private ApontamentoDeProducaoPage apontamentoProd = new ApontamentoDeProducaoPage();
 	private KardexPage kardex = new KardexPage();
+	RequisicaoSaidaPage requisicaoSaida = new RequisicaoSaidaPage();
 
 	// variaveis globais
-	String casoTeste = "CT003 - Ordem Producao Regra 12 com EPA na ultima etapa do apontamento";
+	String casoTeste = "CT013 - Ordem Producao Regra 14";
 
-	String codigoOP;
-	String codProduto;
-	String codApontamento;
-	String codEPA;
-	String dataOP;
-	String qtdeProd;
-	String dataApontamento;
+	String codigoOP = "";
+	String codProduto = "";
+	String codApontamento = "";
+	String codEPA = "";
+	String dataOP = "";
+	String qtdeProd = "";
+	String dataApontamento = "";
 
-	@Dado("^que cadastro uma configuração de ordem de produção com a regra (\\d+)$")
-	public void queCadastroUmaConfiguraçãoDeOrdemDeProduçãoComARegra(int numeroRegra) throws Throwable {
+	@Dado("^que Cadastro um configurador com a Regra (\\d+)$")
+	public void queCadastroUmConfiguradorComARegra(int numeroRegra) throws Throwable {
 		loginPage.acessarTelaSistema();
 		loginPage.setUsuario("robohom");
 		loginPage.setSenha("robo123");
@@ -55,7 +60,7 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		confiOP.validaAlertaSalvoComSucesso();
 		confiOP.clicarAbaCadastro();
 		confiOP.clicarAbaConfigIniciais();
-		confiOP.clicarCheckboxRegra12();
+		confiOP.clicarCheckboxRegra14();
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaPreencherCampos();
 		confiOP.clicarAbaConfigIniciais();
@@ -71,13 +76,12 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		confiOP.validaAlertaSalvoComSucesso();
 	}
 
-	@E("^realizo o cadastro uma ordem de produção utilizando esta regra, informando o cliente de código (\\d+)$")
-	public void realizoOCadastroUmaOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String codigoCliente)
-			throws Throwable {
+	@E("^cadastro uma ordem de produção com esta regra informando o cliente (\\d+)$")
+	public void cadastroUmaOrdemDeProduçãoComEstaRegraInformandoOCliente(String cliente) throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
 		ordemProd.esperaFixa(1000);
 		ordemProd.alternarFocoJanela(2);
-		ordemProd.setCliente(codigoCliente);
+		ordemProd.setCliente(cliente);
 		ordemProd.setOrigemOP("0");
 		ordemProd.clicarBotaoConfirmar();
 		ordemProd.clicarAbaCadastro();
@@ -86,31 +90,27 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		dataOP = ordemProd.obterDataEmissaoOP("datemisop");
 	}
 
-	@E("^insiro o produto de código (\\d+) com quantidade (\\d+)$")
-	public void insiroOProdutoDeCódigoComQuantidade(String codigoProduto, String qtdeProduzir) throws Throwable {
+	@E("^adiciono o produto código (\\d+) para produzir (\\d+) quantidades$")
+	public void adicionoOProdutoCódigoParaProduzirQuantidades(String codigoProduto, String qtdeProduzir)
+			throws Throwable {
 		codProduto = codigoProduto;
-		qtdeProd = qtdeProduzir; // guarda a quantidade a produzir na variavel global "qtdeProd" para
-									// posteriormente validar o saldo da OP na tela de apontamento
+		qtdeProd = qtdeProduzir;
 		ordemProd.clicarAbaItemProduzir();
 		ordemProd.setProduto(codigoProduto);
 		ordemProd.setQuantidadeProduzir(qtdeProduzir);
 		ordemProd.clicarBotaoAdicionar();
 		ordemProd.esperaFixa(300);
 		ordemProd.validaQtdeProduzir(qtdeProduzir);
-		ordemProd.clicarBotaoConfirmarProduto();
-		ordemProd.clicarAbaItemProduzir();
 	}
 
-	@Quando("^finalizo a ordem de produção$")
+	@Quando("^Finalizo a ordem de produção$")
 	public void finalizoAOrdemDeProdução() throws Throwable {
-		ordemProd.clicarAbaReservaInsumos();
-		ordemProd.esperaFixa(300);
-		ordemProd.clicarBotaoFinalizarOP();
+		ordemProd.clicarBotaoFinalizarOPAbaItem();
 		ordemProd.validaAlertaOPFinalizadaSucesso();
 	}
 
-	@E("^cadastro o apontamento desta ordem de produção$")
-	public void cadastroOApontamentoDestaOrdemDeProdução() throws Throwable {
+	@E("^cadastro a primeira etapa do apontamento de produção$")
+	public void cadastroAPrimeiraEtapaDoApontamentoDeProdução() throws Throwable {
 		menuPage.acessaTelaApontamentoProducao();
 		apontamentoProd.esperaFixa(1000);
 		apontamentoProd.alternarFocoJanela(3);
@@ -127,8 +127,10 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		apontamentoProd.validaQtdeProduzida(qtdeProd);
 		apontamentoProd.clicarBotaoFinalizarApontamento();
 		apontamentoProd.validaAlertaApontamentoFinalizado();
+	}
 
-		// cadastrando a segunda etapa do apontamento
+	@E("^cadastro a última etapa do apontamento de produção$")
+	public void cadastroAÚltimaEtapaDoApontamentoDeProdução() throws Throwable {
 		apontamentoProd.setCodigoOrdemProducao(codigoOP);
 		apontamentoProd.setEtapa("11");
 		apontamentoProd.clicarBotaoConfirmarApontamento();
@@ -144,8 +146,6 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		apontamentoProd.esperaFixa(300);
 		apontamentoProd.setTurno("1");
 		apontamentoProd.clicarBotaoFinalizarApontamentoEPA();
-		apontamentoProd.esperaFixa(1000);
-		apontamentoProd.clicarBotaoConfirmarInsumos();
 		apontamentoProd.validaAlertaApontamentoFinalizado();
 	}
 
@@ -166,9 +166,8 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		entProAcabado.validaEPAGerada(codigoOP, codApontamento);
 	}
 
-	@E("^deve movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
-	public void deveMovimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde)
-			throws Throwable {
+	@E("^o Sistema deve efetuar entrada de (\\d+) quantidades do produto (\\d+)$")
+	public void oSistemaDeveEfetuarEntradaDeQuantidadesDoProduto(String qtde, String produto) throws Throwable {
 		menuPage.acessaTelaKardex();
 		kardex.esperaFixa(700);
 		kardex.alternarFocoJanela(5);
@@ -177,6 +176,21 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
 		kardex.validaQtdeEPA(codEPA, qtde);
+	}
+
+	@E("^deve ter gerado o consumo dos insumos pela primeira etapa do apontamento de produção$")
+	public void deveTerGeradoOConsumoDosInsumosPelaPrimeiraEtapaDoApontamentoDeProdução() throws Throwable {
+		menuPage.acessaTelaRequisicaoSaida();
+		requisicaoSaida.esperaFixa(1000);
+		kardex.alternarFocoJanela(6);
+		requisicaoSaida.clicarBotaPesquisarRequisicao();
+		requisicaoSaida.esperaFixa(1000);
+		requisicaoSaida.setDataPeriodo01(obterDataFormatada(new Date()));
+		requisicaoSaida.setDataPeriodo02(obterDataFormatada(new Date()));
+		requisicaoSaida.setComentario("REQUISIÇÃO DE MATERIAL GERADA A PARTIR DA ORDEM DE PRODUCAO " + codigoOP);
+		requisicaoSaida.clicarBotaPesquisarRequisicao();
+		requisicaoSaida.esperaFixa(300);
+		requisicaoSaida.clicarBotaEditarRequisicao();
 	}
 
 	@After(order = 1)

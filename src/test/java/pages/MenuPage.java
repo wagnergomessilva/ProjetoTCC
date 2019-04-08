@@ -38,5 +38,11 @@ public class MenuPage extends BasePage {
 		escrever("inputCaixaPesquisa", "PCP046");
 		clicarNoResultadoDaPesquisa("preresultadoPesquisa");		
 	}
+	
+	public void acessaTelaRequisicaoSaida() {
+		buscaTelasSistemaClicar("iconeNavFerramentaPesquisa");
+		escrever("inputCaixaPesquisa", "Requisição Material - Saída");
+		clicarNoResultadoDaPesquisa("preresultadoPesquisa");		
+	}
 
 }

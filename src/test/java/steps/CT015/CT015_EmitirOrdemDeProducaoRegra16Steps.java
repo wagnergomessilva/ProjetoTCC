@@ -1,4 +1,4 @@
-package steps.CT001;
+package steps.CT015;
 
 import java.awt.AWTException;
 import java.awt.HeadlessException;
@@ -16,7 +16,7 @@ import pages.LoginPage;
 import pages.MenuPage;
 import pages.OrdemDeProducaoPCP045Page;
 
-public class CT001_EmitirOrdemDeProducaoRegra06Steps {
+public class CT015_EmitirOrdemDeProducaoRegra16Steps {
 
 	private LoginPage loginPage = new LoginPage();
 	private MenuPage menuPage = new MenuPage();
@@ -25,16 +25,21 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 	private EntradaProdutoAcabadoPage entProAcabado = new EntradaProdutoAcabadoPage();
 	private KardexPage kardex = new KardexPage();
 
-	// variaveis globais 
+	// variaveis globais
+	String casoTeste = "CT015 - Ordem Producao Regra 16 com 2 produtos";
 
-	String casoTeste = "CT001 - Ordem Producao Regra 06"; // varivael que será utilizada para nomear o Screenshot
-
-	String codigoOP;
-	String codProduto;
-	String codEPA;
-
-	@Dado("^que cadastro um configurador com a regra (\\d+)$")
-	public void que_cadastro_um_configurador_com_a_regra(int numeroRegra) throws Throwable {
+	String codigoOP = "";
+	String codProduto = "";
+	String codProduto2 = "";
+	String qtdeProd = "";
+	String qtdeProd2 = "";
+	String codApontamento = "";
+	String codEPA = "";
+	String dataOP = "";
+	String dataApontamento = "";
+	
+	@Dado("^que efetuo o cadastro um configurador de Ordem de produção com a Regra (\\d+)$")
+	public void queEfetuoOCadastroUmConfiguradorDeOrdemDeProduçãoComARegra(int numeroRegra) throws Throwable {
 		loginPage.acessarTelaSistema();
 		loginPage.setUsuario("robohom");
 		loginPage.setSenha("robo123");
@@ -43,13 +48,14 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		menuPage.acessaTelaConfiguradorDeOrdemProducao();
 
 		confiOP.alternarFocoJanela(1);
+		confiOP.esperaFixa(700);
 		confiOP.setDescricaoRegra("REGRA " + numeroRegra + "");
 		confiOP.setOrigemValue("0");
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaSalvoComSucesso();
 		confiOP.clicarAbaCadastro();
 		confiOP.clicarAbaConfigIniciais();
-		confiOP.clicarCheckboxRegra06();
+		confiOP.clicarCheckboxRegra16();
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaPreencherCampos();
 		confiOP.clicarAbaConfigIniciais();
@@ -58,20 +64,17 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaPreencherCampos();
 		confiOP.clicarAbaImpressao();
-		confiOP.setLayoutImpressaoOP("0");
-		confiOP.clicarAbaMovtoEstoque();
-		confiOP.clicarCheckBoxInsumoSemSaldo();
+		confiOP.setLayoutImpressaoOP("1");
 		confiOP.clicarBotaConfirmar();
 		confiOP.validaAlertaSalvoComSucesso();
 	}
 
-	@E("^cadastro uma ordem de produção com esta regra$")
-	public void cadastro_uma_ordem_de_produção_com_esta_regra() throws Throwable {
-
+	@E("^Cadastro uma Ordem de produção utilizando esta regra, informando o cliente de código (\\d+)$")
+	public void cadastroUmaOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String codigoCliente) throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
 		ordemProd.esperaFixa(2000);
 		ordemProd.alternarFocoJanela(2);
-		ordemProd.setCliente("1182");
+		ordemProd.setCliente(codigoCliente);
 		ordemProd.setOrigemOP("0");
 		ordemProd.clicarBotaoConfirmar();
 		ordemProd.clicarAbaCadastro();
@@ -79,28 +82,31 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		codigoOP = ordemProd.obterCodigoOP("intnumop");
 	}
 
-	@E("^insiro o produto (\\d+) para produzir (\\d+) quantidades$")
-	public void insiro_o_produto_para_produzir_quantidades(String codigoProduto, String qtdeProduzir) throws Throwable {
-		codProduto = codigoProduto;
+	@E("^Insiro o item de código (\\d+) com quantidade (\\d+)$")
+	public void insiroOItemDeCódigoComQuantidade(String codigoProduto, String qtdeProduzir) throws Throwable {
+		if (codProduto == "") {
+			codProduto = codigoProduto;
+			qtdeProd = qtdeProduzir;
+		} else {
+			codProduto2 = codigoProduto;
+			qtdeProd2 = qtdeProduzir;
+		}
 		ordemProd.clicarAbaItemProduzir();
 		ordemProd.setProduto(codigoProduto);
 		ordemProd.setQuantidadeProduzir(qtdeProduzir);
 		ordemProd.clicarBotaoAdicionar();
-		ordemProd.clicarBotaoConfirmarProduto();
-		ordemProd.clicarAbaItemProduzir();
+		ordemProd.esperaFixa(300);
+		ordemProd.validaQtdeProduzir(qtdeProduzir);
 	}
 
-	@Quando("^finalizo a Ordem de produção$")
-	public void finalizo_a_Odem_de_produção() throws Throwable {
-		ordemProd.clicarAbaReservaInsumos();
-		ordemProd.esperaFixa(300);
-		ordemProd.clicarBotaoFinalizarOP();
-		ordemProd.esperaFixa(300);
+	@Quando("^Finalizo esta a ordem de produção$")
+	public void finalizoEstaAOrdemDeProdução() throws Throwable {
+		ordemProd.clicarBotaoFinalizarOPAbaItem();
 		ordemProd.validaAlertaOPFinalizadaSucesso();
 	}
 
-	@E("^realizo a entrada de produto desta Ordem de produção$")
-	public void realizo_a_entrada_de_produto_desta_Ordem_de_produção() throws Throwable {
+	@E("^cadastro a entrada de produto acabado desta Ordem de Produção$")
+	public void cadastroAEntradaDeProdutoAcabadoDestaOrdemDeProdução() throws Throwable {
 		menuPage.acessaTelaEntradaProdutoAcabado();
 		entProAcabado.esperaFixa(700);
 		entProAcabado.alternarFocoJanela(3);
@@ -111,28 +117,43 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 		codEPA = entProAcabado.obterCodigoEPA(); // Obtem o código da EPA para posteriormente validar na tela de kardex
 
 		entProAcabado.setCodigoOrdemProducao(codigoOP);
-		entProAcabado.validaProduto(codProduto, "epiproduto2");
+		entProAcabado.setProdutoEPA(codProduto);
+		entProAcabado.clicarBotaAdicionarEPA();
+		entProAcabado.esperaFixa(700);
+		entProAcabado.clicarBotaoConfirmaInsumo();
+		entProAcabado.esperaFixa(2000);
+
+		// inserindo o segundo produto na entrada de produto acabado
+		entProAcabado.setCodigoOrdemProducao(codigoOP);
+		entProAcabado.setProdutoEPA(codProduto2);
 		entProAcabado.clicarBotaAdicionarEPA();
 		entProAcabado.esperaFixa(700);
 		entProAcabado.clicarBotaoConfirmaInsumo();
 		entProAcabado.esperaFixa(2000);
 	}
 
-	@E("^consulto o estoque do produto (\\d+)$")
-	public void consulto_o_estoque_do_produto(String produto) throws Throwable {
+	@Entao("^o sistema deve Movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
+	public void oSistemaDeveMovimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde) throws Throwable {
 		menuPage.acessaTelaKardex();
 		kardex.esperaFixa(700);
 		kardex.alternarFocoJanela(4);
 		kardex.setProdutoConsulta(produto);
 		kardex.clicarBotaoPesquisarKardex();
-	}
-
-	@Entao("^o sistema deve ter dado entrada de (\\d+) quantidades deste produto$")
-	public void o_sistema_deve_ter_dado_entrada_de_quantidades_deste_produto(int arg1) throws Throwable {
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
+		kardex.validaQtdeEPA(codEPA, qtde);
+		kardex.clicarBotaoNovo();
 	}
 
+	@E("^Movimentar o estoque do produto (\\d+) com uma entrada de (\\d+) quantidades$")
+	public void movimentarOEstoqueDoProdutoComUmaEntradaDeQuantidades(String produto, String qtde) throws Throwable {
+		kardex.setProdutoConsulta(produto);
+		kardex.clicarBotaoPesquisarKardex();
+		kardex.esperaFixa(1000);
+		kardex.validaNumeroEPA(codEPA);
+		kardex.validaQtdeEPA(codEPA, qtde);
+	}
+	
 	@After(order = 1)
 	public void screenshot() throws IOException, HeadlessException, AWTException {
 		ordemProd.screenshotTela(casoTeste);

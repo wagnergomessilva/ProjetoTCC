@@ -13,6 +13,12 @@ import runners.RunnerCT006Test;
 import runners.RunnerCT007Test;
 import runners.RunnerCT008Test;
 import runners.RunnerCT009Test;
+import runners.RunnerCT010Test;
+import runners.RunnerCT011Test;
+import runners.RunnerCT012Test;
+import runners.RunnerCT013Test;
+import runners.RunnerCT014Test;
+import runners.RunnerCT015Test;
 
 
 @RunWith(Suite.class)
@@ -25,7 +31,14 @@ import runners.RunnerCT009Test;
 	RunnerCT006Test.class,
 	RunnerCT007Test.class,
 	RunnerCT008Test.class,
-	RunnerCT009Test.class	
+	RunnerCT009Test.class,
+	RunnerCT010Test.class,
+	RunnerCT011Test.class,
+	RunnerCT012Test.class,
+	RunnerCT013Test.class,
+	RunnerCT014Test.class,
+	RunnerCT015Test.class
+	//RunnerCT016Test.class
 })
 public class SuiteTestes {
 

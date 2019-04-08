@@ -119,9 +119,10 @@ public class CT007_EmitirOrdemDeProducaoRegra04Steps {
 	}
 
 	@Entao("^o Sistema deve ter dado entrada de (\\d+) quantidades deste produto$")
-	public void oSistemaDeveTerDadoEntradaDeQuantidadesDesteProduto(int arg1) throws Throwable {
+	public void oSistemaDeveTerDadoEntradaDeQuantidadesDesteProduto(String qtde) throws Throwable {
 		kardex.esperaFixa(1000);
 		kardex.validaNumeroEPA(codEPA);
+		kardex.validaQtdeEPA(codEPA, qtde);
 	}
 	
 	@After(order = 1)

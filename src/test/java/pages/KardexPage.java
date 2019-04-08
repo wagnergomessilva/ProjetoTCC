@@ -23,6 +23,9 @@ public class KardexPage extends BasePage{
 	public void validaQtdeEPA(String numeroEPA, String qtde) {
 		String qtdeRetornada = obterValorComXpath("//table//tbody//tr[@class='ENT_DE_PRODUCAO_"+numeroEPA+" trList cursor']//td[7]");
 		qtdeRetornada = qtdeRetornada.trim();
+		if (qtde.length() > 3) {
+			qtdeRetornada = qtdeRetornada.replace(".", ""); //retirar o ponto do milhar caso encontre, para evitar erro de assertiva
+		}		
 	
 		assertEquals(qtde, qtdeRetornada);
 		
