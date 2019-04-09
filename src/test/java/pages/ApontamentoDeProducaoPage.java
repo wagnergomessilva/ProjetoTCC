@@ -66,6 +66,10 @@ public class ApontamentoDeProducaoPage extends BasePage {
 		clicarBotaId("btnFinaliz");
 	}
 
+	public void clicarBotaoFinalizarApontamentoInsumo() {
+		clicarBotaId("btnConfirmInsumo");
+	}
+
 	public void validaAlertaApontamentoFinalizado() {
 		assertEquals("Apontamento finalizado com sucesso.", alertaObterTextoEAceita());
 	}
@@ -97,6 +101,10 @@ public class ApontamentoDeProducaoPage extends BasePage {
 
 	public void setProdutoApontamento(String produto) {
 		escrever("objprodutap2", produto);
+	}
+
+	public void clicarAbaItensDeConsumo() {
+		clicarAba("itemaba2");
 	}
 
 }
