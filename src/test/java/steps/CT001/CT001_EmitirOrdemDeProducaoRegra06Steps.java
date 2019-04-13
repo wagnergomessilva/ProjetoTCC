@@ -69,7 +69,8 @@ public class CT001_EmitirOrdemDeProducaoRegra06Steps {
 	public void cadastro_uma_ordem_de_produção_com_esta_regra() throws Throwable {
 
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(2000);
+		//ordemProd.esperaFixa(2000);
+		ordemProd.esperaExplicita("btnSave");
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente("1182");
 		ordemProd.setOrigemOP("0");

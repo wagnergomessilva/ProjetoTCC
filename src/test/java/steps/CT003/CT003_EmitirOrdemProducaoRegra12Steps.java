@@ -75,7 +75,7 @@ public class CT003_EmitirOrdemProducaoRegra12Steps {
 	public void realizoOCadastroUmaOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String codigoCliente)
 			throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(1000);
+		ordemProd.esperaExplicita("btnSave");
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente(codigoCliente);
 		ordemProd.setOrigemOP("0");

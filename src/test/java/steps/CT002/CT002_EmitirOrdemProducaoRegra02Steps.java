@@ -26,7 +26,7 @@ public class CT002_EmitirOrdemProducaoRegra02Steps {
 	// variaveis globais
 	String casoTeste = "CT002 - Ordem Producao Regra 02 com apontamento"; // varivael que será utilizada para nomear o
 																			// Screenshot
-
+ 
 	String codigoOP;
 	String codProduto;
 	String codApontamento;
@@ -69,7 +69,7 @@ public class CT002_EmitirOrdemProducaoRegra02Steps {
 	public void cadastroUmaOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String coigoCliente)
 			throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(1000);
+		ordemProd.esperaExplicita("btnSave");
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente(coigoCliente);
 		ordemProd.setOrigemOP("0");

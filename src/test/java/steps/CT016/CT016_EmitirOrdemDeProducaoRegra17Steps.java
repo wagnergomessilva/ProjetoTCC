@@ -74,7 +74,7 @@ public class CT016_EmitirOrdemDeProducaoRegra17Steps {
 	@E("^Cadastro a Ordem de produção utilizando esta regra, informando o cliente de código (\\d+)$")
 	public void cadastroAOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String cliente) throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(1000);
+		ordemProd.esperaExplicita("btnSave");
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente(cliente);
 		ordemProd.setOrigemOP("0");

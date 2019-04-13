@@ -12,6 +12,7 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 	}
 
 	public void clicarBotaoConfirmar() {
+		esperaExplicita("btnSave");
 		clicarBotaId("btnSave");
 	}
 
@@ -24,6 +25,7 @@ public class OrdemDeProducaoPCP045Page extends BasePage {
 	}
 
 	public void setCliente(String cliente) {
+		esperaExplicita("objclientop2");
 		escrever("objclientop2", cliente);
 	}
 

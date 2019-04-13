@@ -66,7 +66,7 @@ public class CT009_EmitirOrdemDeProducaoRegra09Steps {
 	@E("^cadastro uma Ordem de produção com esta regra$")
 	public void cadastroUmaOrdemDeProduçãoComEstaRegra() throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(700);
+		ordemProd.esperaExplicita("btnSave");
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente("1259");
 		ordemProd.setOrigemOP("0");

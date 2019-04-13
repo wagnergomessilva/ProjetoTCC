@@ -79,7 +79,7 @@ public class CT017_EmitirOrdemDeProducaoRegra19Steps {
 	@E("^Cadastro a Ordem de Produção utilizando esta regra, informando o cliente de código (\\d+)$")
 	public void cadastroAOrdemDeProduçãoUtilizandoEstaRegraInformandoOClienteDeCódigo(String cliente) throws Throwable {
 		menuPage.acessaTelaOrdemProducaoPCP045();
-		ordemProd.esperaFixa(1000);
+		ordemProd.esperaExplicita("btnSave");
 		ordemProd.alternarFocoJanela(2);
 		ordemProd.setCliente(cliente);
 		ordemProd.setOrigemOP("0");
@@ -185,6 +185,7 @@ public class CT017_EmitirOrdemDeProducaoRegra19Steps {
 		requisicaoSaida.clicarBotaPesquisarRequisicao();
 		requisicaoSaida.esperaFixa(300);
 		requisicaoSaida.clicarBotaEditarRequisicao();
+		requisicaoSaida.esperaExplicita("btnSave");
 	}
 	
 	@After(order = 1)
