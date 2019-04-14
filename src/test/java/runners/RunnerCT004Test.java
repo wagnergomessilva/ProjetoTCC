@@ -9,7 +9,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(
 				features = "src/test/resources/features/CT004_ordem_producao_regra18.feature",
-				plugin = "pretty",
+				plugin = {"pretty","html:target/relatorios/CT004"},
 				glue = "steps/CT004",
 				monochrome = true,
 				snippets = SnippetType.CAMELCASE,
